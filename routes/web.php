@@ -10,12 +10,17 @@ Route::get('/', [PostController::class, 'index']);
 Route::get('/load-more', [PostController::class, 'loadMore'])->name('loadMore');
 Route::get('/post/{slug}', [PostController::class, 'show'])->name('post.show');
 Route::get('/category/{categoryName}', [CategoryController::class, 'show'])->name('category.show');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
-Route::get('/admin', function () {
-    return view('dashboard', ['header' => true]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/admin', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/admin/createpost', [PostController::class, 'create'])->middleware(['auth', 'verified'])->name('posts.create');
+Route::post('/admin/posts', [PostController::class, 'store'])->middleware(['auth', 'verified'])->name('posts.store');
+// Route to show the edit post form
+Route::get('/admin/posts/{id}/edit', [PostController::class, 'edit'])->middleware(['auth', 'verified'])->name('posts.edit');
+// Route to update the post
+Route::put('/admin/posts/{id}', [PostController::class, 'update'])->middleware(['auth', 'verified'])->name('posts.update');
+Route::get('/admin/editpost', [PostController::class, 'editpostpage'])->middleware(['auth', 'verified'])->name('editpostpage');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

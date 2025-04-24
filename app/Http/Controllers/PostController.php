@@ -7,6 +7,7 @@ use \App\Models\Post;
 use \App\Models\Category;
 use \App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -16,8 +17,8 @@ class PostController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $posts = Post::with('category', 'user')->latest()->take(12)->get(); // Fetch only 12 posts
-        $sliders = Post::latest()->take(5)->get();
+        $posts = Post::with('category', 'user')->whereNotNull('published_at')->latest()->take(12)->get(); // Fetch only 12 posts
+        $sliders = Post::latest()->whereNotNull('published_at')->take(5)->get();
 
         return view('index', compact('posts', 'categories', 'sliders'));
     }
@@ -62,37 +63,142 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        // Fetch categories for the dropdown
+        $categories = Category::all();
+        return view('post.createpost', compact('categories'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        // Validate the incoming data
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
+            'content' => 'required|string',
+            'keywords' => 'nullable|string|max:255',
+            'slug' => 'required|string|unique:posts,slug',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_link' => 'nullable|url',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        // Ensure at least one image source is provided
+        if (!$request->hasFile('image') && !$request->input('image_link')) {
+            return back()->withErrors(['image' => 'You must upload an image or provide an image link.']);
+        }
+
+        // Handle image upload or link
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/posts');
+            $imagePath = Str::replaceFirst('public', 'storage', $imagePath); // Generate the URL-friendly path
+        } elseif ($request->input('image_link')) {
+            $imagePath = $request->input('image_link');
+        } else {
+            $imagePath = null;
+        }
+
+        // Create the post
+        $post = Post::create([
+            'user_id' => Auth::id(),
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'content' => $request->input('content'),
+            'keywords' => $request->input('keywords'),
+            'slug' => $request->input('slug'),
+            'image' => $imagePath,
+            'category_id' => $request->input('category_id'),
+            'views' => 0,
+            'likes' => 0,
+            'comments_count' => 0,
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        // Redirect back with success message
+        return redirect()->route('dashboard')->with('success', 'Post created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
 
+public function editpostpage(Request $request)
+{
+    $categories = Category::all();
+
+    // Search functionality
+    $query = Post::with('category', 'user')->whereNotNull('published_at');
+    if ($request->has('search') && $request->search) {
+        $query->where('title', 'like', '%' . $request->search . '%');
+    }
+
+    // Paginate posts
+    $posts = $query->latest()->paginate(10);
+
+    return view('post.editpost', compact('posts', 'categories'));
+}
+
+
+
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    public function edit($id)
+{
+    $post = Post::findOrFail($id);
+    $categories = Category::all();
+    return view('post.editpost', compact('post'));
+}
+
+
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+
+public function update(Request $request, $id)
+{
+    $post = Post::findOrFail($id);
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string|max:500',
+        'content' => 'required|string',
+        'keywords' => 'nullable|string|max:255',
+        'slug' => 'required|string|unique:posts,slug,' . $post->id,
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'image_link' => 'nullable|url',
+        'category_id' => 'required|exists:categories,id',
+    ]);
+
+    if (!$request->hasFile('image') && !$request->input('image_link')) {
+        return back()->withErrors(['image' => 'You must upload an image or provide an image link.']);
     }
 
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('public/posts');
+        $imagePath = Str::replaceFirst('public', 'storage', $imagePath);
+    } elseif ($request->input('image_link')) {
+        $imagePath = $request->input('image_link');
+    } else {
+        $imagePath = $post->image; // Keep the existing image
+    }
+
+    $post->update([
+        'title' => $request->input('title'),
+        'description' => $request->input('description'),
+        'content' => $request->input('content'),
+        'keywords' => $request->input('keywords'),
+        'slug' => $request->input('slug'),
+        'image' => $imagePath,
+        'category_id' => $request->input('category_id'),
+    ]);
+
+    return redirect()->route('dashboard')->with('success', 'Post updated successfully!');
+}
     /**
      * Remove the specified resource from storage.
      */
