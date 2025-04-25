@@ -14,12 +14,23 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    // public function edit(Request $request): View
+    // {
+    //     return view('profile.edit', [
+    //         'user' => $request->user(),
+    //     ]);
+    // }
+
     public function edit(Request $request): View
-    {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
-    }
+{
+    $user = $request->user();
+    $posts = $user->posts()->with('category')->latest()->get(); // Assumes User has posts() relationship
+
+    return view('profile.edit', [
+        'user' => $user,
+        'posts' => $posts,
+    ]);
+}
 
     /**
      * Update the user's profile information.

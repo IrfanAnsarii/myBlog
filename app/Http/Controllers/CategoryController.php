@@ -50,6 +50,12 @@ class CategoryController extends Controller
         // return view('index', compact('categories'));
     }
 
+    public function managementPage()
+{
+    $categories = Category::all();
+    return view('categorymanagementpage', compact('categories'));
+}
+
     /**
      * Show the form for creating a new resource.
      */
@@ -62,9 +68,14 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
+{
+    $request->validate([
+        'name' => 'required|string|max:255|unique:categories,name',
+    ]);
+    Category::create(['name' => $request->name]);
+    return redirect()->route('category.management')->with('success', 'Category created!');
+}
+
 
     /**
      * Display the specified resource.
@@ -81,16 +92,24 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255|unique:categories,name,' . $id,
+    ]);
+    $category = Category::findOrFail($id);
+    $category->name = $request->name;
+    $category->save();
+    return redirect()->route('category.management')->with('success', 'Category updated!');
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function destroy($id)
+{
+    $category = Category::findOrFail($id);
+    $category->delete();
+    return redirect()->route('category.management')->with('success', 'Category deleted!');
+}
 }

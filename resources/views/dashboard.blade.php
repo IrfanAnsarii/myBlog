@@ -6,11 +6,10 @@
         <div class="w-1/4 p-6 text-white bg-gray-800 rounded-r-lg shadow-lg">
             <h2 class="mb-8 text-3xl font-semibold text-purple-400">Admin Dashboard</h2>
             <ul>
+
                 <li class="mb-4">
-                    <a href="{{ route('dashboard') }}"
-                        class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
-                        <i class="mr-3 text-yellow-400 fas fa-tachometer-alt"></i>
-                        Overview
+                    <a href="{{ route('dashboard') }}" class="flex items-center p-3 scale-105 bg-indigo-700 rounded-lg">
+                        <i class="mr-3 text-purple-400 fas fa-folder"></i> Overview
                     </a>
                 </li>
                 <li class="mb-4">
@@ -21,7 +20,7 @@
                     </a>
                 </li>
                 <li class="mb-4">
-                    <a href="#"
+                    <a href="{{ route('editpostpage') }}"
                         class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
                         <i class="mr-3 text-blue-400 fas fa-edit"></i>
                         Edit Post
@@ -32,6 +31,18 @@
                         class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
                         <i class="mr-3 text-red-400 fas fa-trash"></i>
                         Delete Post
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="{{ route('poststatuspage') }}"
+                        class="flex items-center p-3 rounded-lg hover:bg-indigo-700 hover:scale-105">
+                        <i class="mr-3 text-red-400 fas fa-info-circle"></i> Post Status
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="{{ route('category.management') }}"
+                        class="flex items-center p-3 rounded-lg hover:bg-indigo-700 hover:scale-105">
+                        <i class="mr-3 text-red-400 fas fa-folder"></i> Category Management
                     </a>
                 </li>
             </ul>

@@ -14,14 +14,12 @@
                     </a>
                 </li>
                 <li class="mb-4">
-                    <a href="{{ route('posts.create') }}"
-                        class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
-                        <i class="mr-3 text-green-400 fas fa-plus-circle"></i>
-                        create Post
+                    <a href="{{ route('posts.create') }}" class="flex items-center p-3 scale-105 bg-indigo-700 rounded-lg">
+                        <i class="mr-3 text-purple-400 fas fa-folder"></i> Create Post
                     </a>
                 </li>
                 <li class="mb-4">
-                    <a href="#"
+                    <a href="{{ route('editpostpage') }}"
                         class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
                         <i class="mr-3 text-blue-400 fas fa-edit"></i>
                         Edit Post
@@ -32,6 +30,18 @@
                         class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
                         <i class="mr-3 text-red-400 fas fa-trash"></i>
                         Delete Post
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="{{ route('poststatuspage') }}"
+                        class="flex items-center p-3 rounded-lg hover:bg-indigo-700 hover:scale-105">
+                        <i class="mr-3 text-red-400 fas fa-info-circle"></i> Post Status
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="{{ route('category.management') }}"
+                        class="flex items-center p-3 rounded-lg hover:bg-indigo-700 hover:scale-105">
+                        <i class="mr-3 text-red-400 fas fa-folder"></i> Category Management
                     </a>
                 </li>
             </ul>

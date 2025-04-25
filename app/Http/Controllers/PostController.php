@@ -8,6 +8,7 @@ use \App\Models\Category;
 use \App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -137,7 +138,7 @@ public function editpostpage(Request $request)
     // Paginate posts
     $posts = $query->latest()->paginate(10);
 
-    return view('post.editpost', compact('posts', 'categories'));
+    return view('post.editpostpage', compact('posts', 'categories'));
 }
 
 
@@ -149,7 +150,7 @@ public function editpostpage(Request $request)
 {
     $post = Post::findOrFail($id);
     $categories = Category::all();
-    return view('post.editpost', compact('post'));
+    return view('post.editpost', compact('post','categories'));
 }
 
 
@@ -202,8 +203,56 @@ public function update(Request $request, $id)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id)
+{
+    $post = Post::findOrFail($id);
+    $post->delete();
+
+    return redirect()->route('deletepostpage')->with('success', 'Post deleted successfully!');
+}
+/**
+ * Display the delete post page with a list of posts.
+ */
+public function deletepostpage(Request $request)
+{
+    $categories = Category::all();
+
+    // Search functionality
+    $query = Post::with('category', 'user');
+    if ($request->has('search') && $request->search) {
+        $query->where('title', 'like', '%' . $request->search . '%');
     }
+
+    // Paginate posts
+    $posts = $query->latest()->paginate(10);
+
+    return view('post.deletepostpage', compact('posts', 'categories'));
+}
+
+public function poststatuspage(Request $request)
+{
+    $posts = Post::with('category', 'user')->latest()->paginate(10);
+    return view('post.poststatuspage', compact('posts'));
+}
+
+public function updateStatus(Request $request, $id)
+{
+    $post = Post::findOrFail($id);
+
+    $request->validate([
+        'likes' => 'required|integer|min:0',
+        'views' => 'required|integer|min:0',
+        'is_published' => 'required|boolean',
+        'published_at' => 'nullable|date',
+    ]);
+
+    $post->likes = $request->likes;
+    $post->views = $request->views;
+    $post->is_published = $request->is_published;
+    $post->published_at = $request->is_published ? $request->published_at : null;
+    $post->save();
+
+    return redirect()->route('poststatuspage')->with('success', 'Post status updated!');
+}
+
 }
