@@ -9,6 +9,7 @@ use \App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -125,21 +126,23 @@ class PostController extends Controller
      * Display the specified resource.
      */
 
-public function editpostpage(Request $request)
-{
-    $categories = Category::all();
+     public function editpostpage(Request $request)
+     {
+         $categories = Category::all();
 
-    // Search functionality
-    $query = Post::with('category', 'user')->whereNotNull('published_at');
-    if ($request->has('search') && $request->search) {
-        $query->where('title', 'like', '%' . $request->search . '%');
-    }
+         // Only show posts by this author if not admin
+         $query = Post::with('category', 'user')->whereNotNull('published_at');
+         if (Auth::check() && Auth::user()->role !== 'admin') {
+             $query->where('user_id', Auth::id());
+         }
+         if ($request->has('search') && $request->search) {
+             $query->where('title', 'like', '%' . $request->search . '%');
+         }
 
-    // Paginate posts
-    $posts = $query->latest()->paginate(10);
+         $posts = $query->latest()->paginate(10);
 
-    return view('post.editpostpage', compact('posts', 'categories'));
-}
+         return view('post.editpostpage', compact('posts', 'categories'));
+     }
 
 
 
@@ -149,6 +152,10 @@ public function editpostpage(Request $request)
     public function edit($id)
 {
     $post = Post::findOrFail($id);
+    // Only allow admin or the post's author
+    if (Auth::user()->role !== 'admin' && $post->user_id !== Auth::id()) {
+        abort(403, 'Unauthorized');
+    }
     $categories = Category::all();
     return view('post.editpost', compact('post','categories'));
 }
@@ -163,6 +170,9 @@ public function editpostpage(Request $request)
 public function update(Request $request, $id)
 {
     $post = Post::findOrFail($id);
+    if (Auth::user()->role !== 'admin' && $post->user_id !== Auth::id()) {
+        abort(403, 'Unauthorized');
+    }
 
     $request->validate([
         'title' => 'required|string|max:255',
@@ -206,6 +216,10 @@ public function update(Request $request, $id)
     public function destroy($id)
 {
     $post = Post::findOrFail($id);
+    // Only allow admin or the post's author
+    if (Auth::check() && Auth::user()->role !== 'admin' && $post->user_id !== Auth::id()) {
+        abort(403, 'Unauthorized');
+    }
     $post->delete();
 
     return redirect()->route('deletepostpage')->with('success', 'Post deleted successfully!');
@@ -217,13 +231,14 @@ public function deletepostpage(Request $request)
 {
     $categories = Category::all();
 
-    // Search functionality
     $query = Post::with('category', 'user');
+    if (Auth::user()->role !== 'admin') {
+        $query->where('user_id', Auth::id());
+    }
     if ($request->has('search') && $request->search) {
         $query->where('title', 'like', '%' . $request->search . '%');
     }
 
-    // Paginate posts
     $posts = $query->latest()->paginate(10);
 
     return view('post.deletepostpage', compact('posts', 'categories'));
@@ -231,13 +246,22 @@ public function deletepostpage(Request $request)
 
 public function poststatuspage(Request $request)
 {
-    $posts = Post::with('category', 'user')->latest()->paginate(10);
+    $query = Post::with('category', 'user');
+    if (Auth::check() && Auth::user()->role !== 'admin') {
+        $query->where('user_id', Auth::id());
+    }
+    $posts = $query->latest()->paginate(10);
     return view('post.poststatuspage', compact('posts'));
 }
+
 
 public function updateStatus(Request $request, $id)
 {
     $post = Post::findOrFail($id);
+    // Only allow admin or the post's author
+    if (Auth::user()->role !== 'admin' && $post->user_id !== Auth::id()) {
+        abort(403, 'Unauthorized');
+    }
 
     $request->validate([
         'likes' => 'required|integer|min:0',
