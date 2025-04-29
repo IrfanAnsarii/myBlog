@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', [PostController::class, 'index']);
 Route::get('/load-more', [PostController::class, 'loadMore'])->name('loadMore');
@@ -31,6 +32,8 @@ Route::get('/admin/categorymanagement', [CategoryController::class, 'managementP
 Route::post('/admin/category/update/{id}', [CategoryController::class, 'update'])->middleware(['auth', 'verified'])->name('category.update');
 Route::delete('/admin/category/delete/{id}', [CategoryController::class, 'destroy'])->middleware(['auth', 'verified'])->name('category.delete');
 Route::post('/admin/category/create', [CategoryController::class, 'store'])->middleware(['auth', 'verified'])->name('category.create');
+//comment routes
+Route::post('/post/{post}/comment', [CommentController::class, 'store'])->middleware('auth')->name('comment.store');
 
 
 
