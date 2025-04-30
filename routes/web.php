@@ -46,6 +46,8 @@ Route::middleware(['auth', 'role:author,admin'])->group(function () {
     Route::delete('/admin/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::get('/admin/poststatus', [PostController::class, 'poststatuspage'])->name('poststatuspage');
     Route::post('/admin/poststatus/update/{id}', [PostController::class, 'updateStatus'])->name('poststatus.update');
+    Route::get('/user/dashboard', [UserdashboardController::class, 'index'])->name('user.dashboard');
+
 });
 
 
