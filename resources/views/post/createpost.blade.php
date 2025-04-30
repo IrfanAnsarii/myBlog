@@ -3,70 +3,7 @@
 @section('content')
     <div class="flex min-h-screen bg-gray-900">
         <!-- Left Sidebar -->
-        <div class="w-1/4 p-6 text-white bg-gray-800 rounded-r-lg shadow-lg">
-            <h2 class="mb-8 text-3xl font-semibold text-purple-400">Admin Dashboard</h2>
-            <ul>
-                <li class="mb-4">
-                    <a href="{{ route('dashboard') }}"
-                        class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
-                        <i class="mr-3 text-yellow-400 fas fa-tachometer-alt"></i>
-                        Overview
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="{{ route('user.dashboard') }}"
-                        class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
-                        <i class="mr-3 text-blue-400 fas fa-edit"></i>
-                        User Dashboard
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="{{ route('posts.create') }}" class="flex items-center p-3 scale-105 bg-indigo-700 rounded-lg">
-                        <i class="mr-3 text-purple-400 fas fa-folder"></i> Create Post
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="{{ route('editpostpage') }}"
-                        class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
-                        <i class="mr-3 text-blue-400 fas fa-edit"></i>
-                        Edit Post
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="#"
-                        class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
-                        <i class="mr-3 text-red-400 fas fa-trash"></i>
-                        Delete Post
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="{{ route('poststatuspage') }}"
-                        class="flex items-center p-3 rounded-lg hover:bg-indigo-700 hover:scale-105">
-                        <i class="mr-3 text-red-400 fas fa-info-circle"></i> Post Status
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="{{ route('category.management') }}"
-                        class="flex items-center p-3 rounded-lg hover:bg-indigo-700 hover:scale-105">
-                        <i class="mr-3 text-red-400 fas fa-folder"></i> Category Management
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="{{ route('admin.comments') }}"
-                        class="flex items-center p-3 rounded-lg hover:bg-indigo-700 hover:scale-105">
-                        <i class="mr-3 text-purple-400 fas fa-comments"></i>
-                        Manage Comments
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="{{ route('admin.managerole') }}"
-                        class="flex items-center p-3 rounded-lg hover:bg-indigo-700 hover:scale-105">
-                        <i class="mr-3 text-purple-400 fas fa-users-cog"></i>
-                        User Role Management
-                    </a>
-                </li>
-            </ul>
-        </div>
+        @include('post.sidebar')
 
         <!-- Main Content Area -->
         <div class="flex-1 p-6 bg-gray-900">
