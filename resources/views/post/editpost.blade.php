@@ -14,6 +14,13 @@
                     </a>
                 </li>
                 <li class="mb-4">
+                    <a href="{{ route('user.dashboard') }}"
+                        class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
+                        <i class="mr-3 text-blue-400 fas fa-edit"></i>
+                        User Dashboard
+                    </a>
+                </li>
+                <li class="mb-4">
                     <a href="{{ route('posts.create') }}"
                         class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
                         <i class="mr-3 text-green-400 fas fa-plus-circle"></i>
@@ -32,6 +39,20 @@
                         class="flex items-center p-3 transition-all duration-300 transform rounded-lg hover:bg-indigo-700 hover:scale-105">
                         <i class="mr-3 text-red-400 fas fa-trash"></i>
                         Delete Post
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="{{ route('admin.comments') }}"
+                        class="flex items-center p-3 rounded-lg hover:bg-indigo-700 hover:scale-105">
+                        <i class="mr-3 text-purple-400 fas fa-comments"></i>
+                        Manage Comments
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="{{ route('admin.managerole') }}"
+                        class="flex items-center p-3 rounded-lg hover:bg-indigo-700 hover:scale-105">
+                        <i class="mr-3 text-purple-400 fas fa-users-cog"></i>
+                        User Role Management
                     </a>
                 </li>
             </ul>

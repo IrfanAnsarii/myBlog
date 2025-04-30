@@ -57,7 +57,9 @@ class PostController extends Controller
             ->take(5)
             ->get();
 
-        return view('post', compact('post', 'categories', 'relatedPosts'));
+            // Only fetch approved comments
+            $comments = $post->approvedComments()->latest()->get();
+        return view('post', compact('post', 'categories', 'relatedPosts','comments'));
     }
 
     /**

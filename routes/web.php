@@ -6,6 +6,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\UserdashboardController;
+use App\Http\Controllers\AdminController;
 
 // Public routes
 Route::get('/', [PostController::class, 'index']);
@@ -21,9 +23,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/category/create', [CategoryController::class, 'store'])->name('category.create');
     Route::post('/admin/category/update/{id}', [CategoryController::class, 'update'])->name('category.update');
     Route::delete('/admin/category/delete/{id}', [CategoryController::class, 'destroy'])->name('category.delete');
+    //comment routes
+    Route::get('/admin/comments', [CommentController::class, 'index'])->name('admin.comments');
+    //Route::post('/admin/comments/{id}/approve', [CommentController::class, 'approve'])->name('admin.comments.approve');
+    Route::delete('/admin/comments/{id}', [CommentController::class, 'destroy'])->name('admin.comments.destroy');
+    Route::post('/admin/comments/{id}/toggle', [CommentController::class, 'toggle'])->name('admin.comments.toggle');
 
     // Add your user role management routes here, e.g.:
     // Route::post('/admin/user/{id}/role', [AdminController::class, 'updateRole'])->name('admin.user.role');
+    Route::get('/admin/managerole', [AdminController::class, 'manageRoles'])->name('admin.managerole');
+    Route::post('/admin/user/{id}/role', [AdminController::class, 'updateRole'])->name('admin.user.role');
 });
 
 // Author and admin can manage posts
@@ -46,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/user/dashboard', [UserdashboardController::class, 'index'])->name('user.dashboard');
 
 });
 

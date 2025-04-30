@@ -23,4 +23,27 @@ class CommentController extends Controller
 
         return redirect()->back()->with('success', 'Comment added!');
     }
+
+    public function index()
+    {
+        $comments = Comment::with(['post', 'user'])->latest()->paginate(10);
+        return view('comment.managecomments', compact('comments'));
+    }
+
+    public function toggle($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->approved = !$comment->approved;
+        $comment->save();
+
+        return redirect()->back()->with('success', 'Comment status updated.');
+    }
+
+    public function destroy($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
+
+        return redirect()->back()->with('success', 'Comment deleted.');
+    }
 }

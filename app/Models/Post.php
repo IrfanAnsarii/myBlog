@@ -65,4 +65,8 @@ class Post extends Model
     }
 
 
+    public function approvedComments()
+{
+    return $this->hasMany(Comment::class)->where('approved', true);
+}
 }
