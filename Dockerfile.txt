@@ -1,4 +1,4 @@
-# Use official PHP 8.2 image with Apache for better support
+# Use official PHP 8.2 image with Apache
 FROM php:8.2-apache
 
 # Install system dependencies and PHP extensions
@@ -26,6 +26,20 @@ RUN chown -R www-data:www-data /var/www/html && \
     find /var/www/html -type d -exec chmod 755 {} \; && \
     find /var/www/html -type f -exec chmod 644 {} \; && \
     chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Configure Apache document root to Laravel's public directory
+RUN echo "<VirtualHost *:80>\n\
+    DocumentRoot /var/www/html/public\n\
+    <Directory /var/www/html/public>\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+    ErrorLog \${APACHE_LOG_DIR}/error.log\n\
+    CustomLog \${APACHE_LOG_DIR}/access.log combined\n\
+</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
+
+# Ensure Apache rewrite module is enabled
+RUN a2enmod rewrite
 
 # Cache Laravel configuration, routes, and views
 RUN php artisan config:cache && \
