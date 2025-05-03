@@ -8,6 +8,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserdashboardController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Api\PostApiController;
+
 
 // Public routes
 Route::get('/', [PostController::class, 'index']);
@@ -60,5 +62,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/dashboard', [UserdashboardController::class, 'index'])->name('user.dashboard');
 
 });
+
+//api routes
+Route::prefix('apis')->group(function () {
+    Route::get('/posts', [PostApiController::class, 'index']);
+    Route::get('/posts/{slug}', [PostApiController::class, 'show']);
+    Route::get('/categories', [PostApiController::class, 'categoryfetchapi']);
+});
+
 
 require __DIR__.'/auth.php';
