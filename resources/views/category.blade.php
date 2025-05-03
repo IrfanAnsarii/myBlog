@@ -9,6 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <style>
         body {
             background: linear-gradient(135deg, #0d1b2a, #1b263b);
@@ -166,14 +167,66 @@
         <a href="/" class="text-5xl font-extrabold logo text-cyan-400">TechBit</a>
     </div>
 
-    <!-- Category Menu Bar -->
-    <nav class="relative z-20 bg-gray-900 shadow-lg">
-        <div class="container px-4 py-4 mx-auto">
-            <div class="flex justify-center space-x-10">
+    <!-- Category Menu Bar with Responsive Side Nav -->
+    <nav class="relative z-20 bg-gray-900 shadow-lg" x-data="{ open: false }">
+        <div class="container flex items-center justify-between px-4 py-4 mx-auto">
+            <!-- Hamburger for mobile -->
+            <button @click="open = true" class="text-gray-300 md:hidden focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <!-- Categories (hidden on mobile) -->
+            <div class="flex-wrap justify-center hidden w-full md:flex gap-x-6 gap-y-3 md:space-x-10">
                 @foreach ($categories as $cat)
                     <a href="/category/{{ $cat->name }}"
                         class="text-lg text-gray-300 category-link">{{ $cat->name }}</a>
                 @endforeach
+            </div>
+        </div>
+        <!-- Side Nav Drawer for mobile -->
+        <div x-show="open" x-transition.opacity class="fixed inset-0 z-50 flex">
+            <!-- Overlay -->
+            <div class="fixed inset-0 bg-gradient-to-br from-cyan-900/80 via-gray-900/90 to-fuchsia-900/80 backdrop-blur-sm"
+                @click="open = false"></div>
+            <!-- Drawer -->
+            <div
+                class="relative flex flex-col h-full p-8 border-r-4 shadow-2xl w-72 bg-gradient-to-br from-gray-900 via-gray-800 to-cyan-950 border-cyan-400 rounded-r-3xl">
+                <button @click="open = false"
+                    class="absolute transition top-4 right-4 text-cyan-300 hover:text-fuchsia-400">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <div class="flex items-center mb-8 space-x-3">
+                    <svg class="w-8 h-8 text-cyan-400 animate-pulse" fill="none" stroke="currentColor"
+                        stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"
+                            fill="none" />
+                        <path stroke="currentColor" stroke-width="2" d="M8 12l2 2 4-4" />
+                    </svg>
+                    <span class="text-2xl font-extrabold tracking-wide text-cyan-300">Categories</span>
+                </div>
+                <!-- Make this div scrollable if content overflows -->
+                <div class="flex flex-col mt-4 space-y-4 overflow-y-auto" style="max-height: 60vh;">
+                    @foreach ($categories as $cat)
+                        <a href="/category/{{ $cat->name }}"
+                            class="flex items-center px-4 py-2 text-lg font-semibold text-gray-100 transition-all duration-200 border-l-4 border-transparent rounded-lg shadow-md bg-gradient-to-r from-cyan-700/30 to-fuchsia-700/10 hover:from-cyan-500/60 hover:to-fuchsia-500/30 hover:shadow-lg hover:border-cyan-400"
+                            @click="open = false">
+                            <svg class="w-5 h-5 mr-3 text-cyan-300" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"
+                                    fill="none" />
+                                <path stroke="currentColor" stroke-width="2" d="M8 12l2 2 4-4" />
+                            </svg>
+                            {{ $cat->name }}
+                        </a>
+                    @endforeach
+                </div>
+                <div class="pt-8 mt-auto text-xs text-center text-gray-400">
+                    <span class="block">TechBit &copy; 2025</span>
+                    <span class="block">Stay curious. Stay inspired.</span>
+                </div>
             </div>
         </div>
     </nav>
