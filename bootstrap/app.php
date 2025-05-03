@@ -23,3 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+
+$app->router->middlewareGroup('api', [
+    // ...other middleware...
+    \App\Http\Middleware\ApiMiddleware::class,
+]);
