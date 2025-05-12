@@ -41,6 +41,9 @@ RUN echo "<VirtualHost *:80>\n\
 # Ensure Apache rewrite module is enabled
 RUN a2enmod rewrite
 
+RUN npm install
+RUN npm run build
+
 # Cache Laravel configuration, routes, and views
 RUN php artisan config:cache && \
     php artisan route:cache && \

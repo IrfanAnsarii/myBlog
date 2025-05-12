@@ -50,6 +50,8 @@ Route::middleware(['auth', 'role:author,admin'])->group(function () {
     Route::post('/admin/poststatus/update/{id}', [PostController::class, 'updateStatus'])->name('poststatus.update');
     Route::get('/user/dashboard', [UserdashboardController::class, 'index'])->name('user.dashboard');
 
+
+
 });
 
 
@@ -69,6 +71,8 @@ Route::prefix('apis')->group(function () {
     Route::get('/posts/{slug}', [PostApiController::class, 'show']);
     Route::get('/categories', [PostApiController::class, 'categoryfetchapi']);
 });
+
+
 
 
 require __DIR__.'/auth.php';
