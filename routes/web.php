@@ -72,7 +72,9 @@ Route::prefix('apis')->group(function () {
     Route::get('/categories', [PostApiController::class, 'categoryfetchapi']);
 });
 
-
+Route::fallback(function () {
+    return view('errors.404');
+});
 
 
 require __DIR__.'/auth.php';

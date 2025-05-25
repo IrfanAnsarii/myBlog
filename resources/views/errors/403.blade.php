@@ -1,10 +1,10 @@
-<!-- filepath: d:\Github\myBlog\resources\views\errors\404.blade.php -->
+<!-- filepath: d:\Github\myBlog\resources\views\errors\403.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>404 - Page Not Found | TechBit</title>
+    <title>403 - Forbidden | TechBit</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
@@ -19,17 +19,17 @@
         }
 
         .glow {
-            text-shadow: 0 0 20px #00b7ff, 0 0 40px #ff00ff, 0 0 60px #00b7ff;
+            text-shadow: 0 0 20px #ff00ff, 0 0 40px #00b7ff, 0 0 60px #ff00ff;
         }
 
         .neon-btn {
-            background: linear-gradient(to right, #00b7ff, #ff00ff);
+            background: linear-gradient(to right, #ff00ff, #00b7ff);
             color: #fff;
             padding: 0.75rem 2rem;
             border-radius: 9999px;
             font-weight: bold;
             font-size: 1.1rem;
-            box-shadow: 0 0 20px #00b7ff80, 0 0 40px #ff00ff40;
+            box-shadow: 0 0 20px #ff00ff80, 0 0 40px #00b7ff40;
             transition: transform 0.2s, box-shadow 0.2s;
             text-decoration: none;
             display: inline-block;
@@ -38,8 +38,8 @@
 
         .neon-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 40px #00b7ff, 0 0 80px #ff00ff;
-            background: linear-gradient(to right, #ff00ff, #00b7ff);
+            box-shadow: 0 0 40px #ff00ff, 0 0 80px #00b7ff;
+            background: linear-gradient(to right, #00b7ff, #ff00ff);
         }
 
         .particles {
@@ -57,23 +57,23 @@
 <body>
     <div id="particles-js" class="particles"></div>
     <div class="text-center">
-        <h1 class="mb-4 font-extrabold text-8xl glow">404</h1>
-        <h2 class="mb-2 text-3xl font-bold glow">Page Not Found</h2>
-        <p class="mb-6 text-lg text-gray-300">Oops! The page you are looking for does not exist or has been moved.</p>
+        <h1 class="mb-4 font-extrabold text-8xl glow">403</h1>
+        <h2 class="mb-2 text-3xl font-bold glow">Forbidden</h2>
+        <p class="mb-6 text-lg text-gray-300">Sorry, you don't have permission to access this page.</p>
         <a href="{{ url('/') }}" class="neon-btn">Go Home</a>
     </div>
     <script>
         particlesJS('particles-js', {
             "particles": {
                 "number": {
-                    "value": 60,
+                    "value": 50,
                     "density": {
                         "enable": true,
                         "value_area": 800
                     }
                 },
                 "color": {
-                    "value": ["#00b7ff", "#ff00ff", "#fff"]
+                    "value": ["#ff00ff", "#00b7ff", "#fff"]
                 },
                 "shape": {
                     "type": "circle"
@@ -89,7 +89,7 @@
                 "line_linked": {
                     "enable": true,
                     "distance": 150,
-                    "color": "#00b7ff",
+                    "color": "#ff00ff",
                     "opacity": 0.3,
                     "width": 1
                 },

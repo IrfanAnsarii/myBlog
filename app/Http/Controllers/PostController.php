@@ -95,8 +95,9 @@ class PostController extends Controller
 
         // Handle image upload or link
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('public/posts');
+            $imagePath = $request->file('image')->store('posts','public'); // Store the image in the 'public/posts' directory
             $imagePath = Str::replaceFirst('public', 'storage', $imagePath); // Generate the URL-friendly path
+            $imagePath = "../storage/" . $imagePath; // Adjust the path for the view
         } elseif ($request->input('image_link')) {
             $imagePath = $request->input('image_link');
         } else {
@@ -192,8 +193,9 @@ public function update(Request $request, $id)
     }
 
     if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('public/posts');
+        $imagePath = $request->file('image')->store('posts','public');
         $imagePath = Str::replaceFirst('public', 'storage', $imagePath);
+        $imagePath = "../storage/" . $imagePath; // Adjust the path for the view
     } elseif ($request->input('image_link')) {
         $imagePath = $request->input('image_link');
     } else {

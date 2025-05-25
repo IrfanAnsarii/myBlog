@@ -10,9 +10,9 @@
                 </a>
                 <!-- Navigation Links -->
                 <div class="hidden space-x-6 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{-- <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <i class="mr-2 text-yellow-400 fas fa-tachometer-alt"></i> Dashboard
-                    </x-nav-link>
+                    </x-nav-link> --}}
                     <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
                         <i class="mr-2 text-green-400 fas fa-plus-circle"></i> Create Post
                     </x-nav-link>
@@ -25,9 +25,9 @@
                     <x-nav-link :href="route('poststatuspage')" :active="request()->routeIs('poststatuspage')">
                         <i class="mr-2 text-purple-400 fas fa-info-circle"></i> Post Status
                     </x-nav-link>
-                    <x-nav-link :href="route('category.management')" :active="request()->routeIs('category.management')">
+                    {{-- <x-nav-link :href="route('category.management')" :active="request()->routeIs('category.management')">
                         <i class="mr-2 text-indigo-400 fas fa-folder"></i> Category Management
-                    </x-nav-link>
+                    </x-nav-link> --}}
                 </div>
             </div>
 

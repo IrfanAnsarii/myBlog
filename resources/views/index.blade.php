@@ -284,13 +284,40 @@
     <!-- Top Menu: Login and Register -->
     <div class="relative z-20 py-4 bg-gray-900">
         <div class="container flex justify-end px-4 mx-auto space-x-6">
-            <a href="/login" class="text-sm text-gray-300 nav-link hover:text-white">Login</a>
-            <a href="/register" class="text-sm text-gray-300 nav-link hover:text-white">Register</a>
+            @if (auth()->check())
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open"
+                        class="flex items-center space-x-2 text-sm font-semibold text-cyan-400 focus:outline-none">
+                        <span>{{ auth()->user()->name }}</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" @click.away="open = false" x-transition
+                        class="absolute right-0 z-50 w-40 mt-2 bg-gray-800 rounded-lg shadow-lg">
+                        @if (in_array(auth()->user()->role, ['admin', 'author']))
+                            <a href="/user/dashboard"
+                                class="block px-4 py-2 text-sm text-gray-200 rounded-t-lg hover:bg-cyan-700">Dashboard</a>
+                        @endif
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="w-full px-4 py-2 text-sm text-left text-gray-200 rounded-b-lg hover:bg-cyan-700">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <a href="/login" class="text-sm text-gray-300 nav-link hover:text-white">Login</a>
+                <a href="/register" class="text-sm text-gray-300 nav-link hover:text-white">Register</a>
+            @endif
         </div>
     </div>
 
     <!-- Logo Section -->
-    <div class="relative z-20 py-8 text-center bg-gray-800">
+    <div class="relative z-10 py-8 text-center bg-gray-800">
         <a href="/" class="text-5xl font-extrabold logo text-cyan-400">TechBit</a>
     </div>
 
